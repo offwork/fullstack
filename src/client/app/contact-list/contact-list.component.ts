@@ -15,7 +15,7 @@ export class ContactListComponent implements OnInit {
   constructor(public api: ApiService) { }
 
   ngOnInit() {
-    this.api.get('contacts')
+    this.api.fetchAll<Contact[]>('contacts')
       .subscribe(data => { this.contacts = data; console.log('DATA: ', data);});
   }
 

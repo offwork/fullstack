@@ -2,89 +2,83 @@ import { Injectable, Inject } from '@angular/core';
 import {
   HttpClient,
   HttpHeaders,
-  HttpRequest,
+  HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpParams
+  HttpErrorResponse
 } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
-
-export declare type RequestOptionsObserve = 'body' | 'events' | 'response';
-export declare type RequestOptionsOType = 'arraybuffer' | 'blob' | 'json' | 'text';
-
-export interface IApiRequestOptions {
-  body?: any;
-  headers?: HttpHeaders | {
-    [header: string]: string | string[];
-  };
-  params?: HttpParams | {
-    [param: string]: string | string[];
-  };
-  observe?: RequestOptionsObserve;
-  reportProgress?: boolean;
-  responseType?: RequestOptionsOType;
-  withCredentials?: boolean;
-}
-
-
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ApiService extends BaseApiService {
 
   private baseUrl = environment.apiUrl;
+  private httpHeaders: HttpHeaders;
 
-  constructor(@Inject(HttpClient) private httpClient: HttpClient) { }
+  constructor(@Inject(HttpClient) private httpClient: HttpClient) { 
+    super(httpClient);
+    this.httpHeaders = new HttpHeaders();
+    this.httpHeaders.append('Content-Type', 'application/json')
+  }
 
-  request(method: string, url: string, body?: any, options?: {}): Observable<any> {
-
-    let _body = null;
-    let headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    let params = null;
-    let observe: RequestOptionsObserve;
-    let reportProgress: boolean;
-    let responseType: RequestOptionsOType;
-    let withCredentials: boolean;
-
-    if( options ) {
-      _body = body;
-      headers = options['headers'] ? options['headers'] : headers;
-      params = options['params'] ? options['params'] : null;
-      // observe = options['observe'] ? options['observe'] : undefined;
-      reportProgress = options['reportProgress'] ? options['reportProgress'] : false;
-      //responseType = options['responseType'] ? options['responseType'] : undefined;
-      withCredentials = options['withCredentials'] ? options['withCredentials'] : false;
-    }
-
-    // 1 - Varsayilan bir reqtOpts nesnesi request yontemince ayarlanir.
-    // 2 - request yonetimini cagiran islev request yontemine bir init nesnesi 
-    //     gecerse, reqtOpts nesnesi gecersiz kilinir.
-    // 3 - request yonetimini cagiran islev tarafindan request yonetimini donus turu belirlenir.
-    const reqtOpts:IApiRequestOptions = {
-      body: body ? body : null,
-      headers: headers,
-      params: params,
-      observe: 'body', 
-      reportProgress: false,
+  straightRequest<R>(method: string, url: string, body?: any | null, options?: {}): Observable<R> {
+    return this.httpClient.request<R>(method, `${this.baseUrl}/${url}`, {
+      body: body,
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      observe: 'body',
+      params: null,
       responseType: 'json',
-      withCredentials: false
+      reportProgress: null,
+      withCredentials: null,
+    }).pipe( catchError(this.handleError) );
+  }
+
+  responseRequest<R>(method: string, url: string, body?: any | null, options?: {}): Observable<HttpResponse<R>> {
+    return this.httpClient.request<R>(method, `${this.baseUrl}/${url}`, {
+      body: body,
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      observe: 'response',
+      params: null,
+      responseType: 'json',
+      reportProgress: null,
+      withCredentials: null,
+    }).pipe( catchError(this.handleError) );
+  }
+
+  fetchAll<T>(url: string): Observable<T> {
+    return this.straightRequest<T>('GET', url);
+  }
+
+  createByOne<T>(url: string, body: any | null): Observable<HttpResponse<T>> {
+    console.log('Create Contact: ', body);
+    return this.responseRequest<T>('POST', url, body);
+  }
+
+  updateByOne<T>(url: string, body: any | null): Observable<HttpResponse<T>> {
+    console.log('Create Contact: ', body);
+    return this.responseRequest<T>('PUT', url, body);
+  }
+
+  delete<T>(url: string): Observable<T> {
+    return this.straightRequest<T>('DELETE', url);
+  }
+
+
+  // TODO: change Error handling
+  private handleError(error: HttpErrorResponse) {
+    if(error.error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.error.message);
+    } else {
+      console.error(
+      `Backend returned code ${error.status}, ` +
+      `body was: ${error.error}`);
     }
 
-    console.log('request options: ', reqtOpts);
-
-    return this.httpClient.request(method, `${this.baseUrl}/${url}`, reqtOpts);
-  }
-
-  get(url: string): Observable<Object> {
-    return this.request('GET', url);
-  }
-
-  post(url: string, body: any | null) {
-    return this.request('POST', url, body);
+    return throwError(`Something bad happened; please try again later. ${error.message}`);
   }
 }

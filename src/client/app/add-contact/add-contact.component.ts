@@ -30,12 +30,13 @@ export class AddContactComponent implements OnInit {
       phone: `${formValues.ariaCode} ${formValues.prefix} ${formValues.lineNumber}`,
       photoUrl: formValues.photo
     }
-    console.log('Response: ', contact);
-    this.api.post('contacts', contact)
+    
+    this.api.createByOne<Contact>('contacts', contact)
       .subscribe(data => {
         form.reset();
         this.loading =false;
-        this.newContact = data
+        console.log('Response: ', data);
+        this.newContact = data.body;
       });
   }
 
