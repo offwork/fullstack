@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuardService as AuthGuard } from './shared/services/auth-guard.service';
-import { ContactListComponent } from './contact-list/contact-list.component';
-import { AddContactComponent } from './add-contact/add-contact.component';
-import { LoginComponent } from './login/login.component';
+import { AuthGuardService as AuthGuard } from './auth/services/auth-guard.service';
+import { ContactListComponent, AddContactComponent } from './contacts';
+import { LoginComponent } from './auth/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'contacts', pathMatch: 'full' },

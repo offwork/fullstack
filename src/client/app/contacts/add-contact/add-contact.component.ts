@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { ApiService } from '../shared';
-
-import { Contact } from '../shared';
+import { ApiService, Contact } from '../../shared';
 
 @Component({
   selector: 'fsa-add-contact',

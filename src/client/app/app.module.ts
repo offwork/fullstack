@@ -1,44 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-
-import { ApiService, AuthService, AuthGuardService, TokenInterceptorService } from './shared';
-
 import { AppComponent } from './app.component';
-import { ContactListComponent } from './contact-list/contact-list.component';
-import { ContactComponent } from './contact/contact.component';
-import { AddContactComponent } from './add-contact/add-contact.component';
-import { MenuComponent } from './menu/menu.component';
-import { LoginComponent } from './login/login.component';
+
+import { AuthModule } from './auth/auth.module';
+import { ContactsModule } from './contacts/contacts.module';
+import { SharedModule } from './shared/shared.module';
+/**
+ * NgRx
+ */
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContactListComponent,
-    ContactComponent,
-    AddContactComponent,
-    MenuComponent,
-    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule.forRoot(),
+    AuthModule.forRoot(),
+    ContactsModule
   ],
-  providers: [
-    ApiService,
-    AuthService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true
-    },
-    AuthGuardService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

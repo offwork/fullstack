@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { ApiService, AuthService } from '../shared';
+import { ApiService } from '../../shared';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'fsa-login',

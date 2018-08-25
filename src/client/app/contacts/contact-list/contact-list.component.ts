@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../shared';
-
-import { Contact } from '../shared';
+import { ApiService, Contact } from '../../shared';
 
 @Component({
   selector: 'fsa-contact-list',
