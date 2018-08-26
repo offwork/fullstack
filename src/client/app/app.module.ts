@@ -13,6 +13,8 @@ import { SharedModule } from './shared/shared.module';
  * NgRx
  */
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,13 @@ import { StoreModule } from '@ngrx/store';
     AppRoutingModule,
     SharedModule.forRoot(),
     AuthModule.forRoot(),
-    ContactsModule
+    ContactsModule,
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      name: 'AF App DevTools',
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

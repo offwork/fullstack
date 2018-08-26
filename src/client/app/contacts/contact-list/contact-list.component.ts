@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService, Contact } from '../../shared';
+import { Component, OnInit, ContentChild, TemplateRef, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'fsa-contact-list',
@@ -7,14 +6,13 @@ import { ApiService, Contact } from '../../shared';
   styleUrls: ['./contact-list.component.scss']
 })
 export class ContactListComponent implements OnInit {
+  
+  @HostBinding('class') columnClass = 'col-md-3';
+  @ContentChild('contactTmp') contactTmp: TemplateRef<any>;
 
-  contacts;
-
-  constructor(public api: ApiService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.api.fetchAll<Contact[]>('contacts')
-      .subscribe(data => { this.contacts = data; console.log('DATA: ', data);});
   }
 
 }

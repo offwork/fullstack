@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="row">
+    <fsa-contact-list *ngFor="let contact of contacts">
+      <ng-template #contactTmp>
+        <fsa-contact (toggled)="checkChanged($event)" [display]="displayAddress" [contact]="contact"></fsa-contact>
+      </ng-template>
+    </fsa-contact-list>
+  </div>
+</div>

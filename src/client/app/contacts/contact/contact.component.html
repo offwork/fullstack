@@ -2,9 +2,16 @@
   <img class="card-img-top" [src]="contact?.photoUrl" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">{{contact.name}}</h5>
-    <p class="card-text">{{contact.address}}</p>
+    <p class="card-text" *ngIf="display">{{contact.address}}</p>
   </div>
   <div class="card-footer">
     <small class="text-muted">{{contact.phone}}</small>
+    <div class="form-check">
+      <input type="checkbox" id="address"
+        class="form-check-input"
+        (change)="toggled.emit(this);"
+        [checked]="display">
+      <label class="form-check-label" for="address">Show Address</label>
+    </div>
   </div>
 </div>

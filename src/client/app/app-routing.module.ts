@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService as AuthGuard } from './auth/services/auth-guard.service';
-import { ContactListComponent, AddContactComponent } from './contacts';
+import { ContactsComponent, AddContactComponent } from './contacts';
 import { LoginComponent } from './auth/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'contacts', pathMatch: 'full' },
-  { path: 'contacts', component: ContactListComponent, canActivate: [AuthGuard] },
+  { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },
   { path: 'new', component: AddContactComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: 'contacts' },

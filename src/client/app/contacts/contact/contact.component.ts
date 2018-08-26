@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Contact } from '../../shared';
 
 @Component({
@@ -6,14 +6,9 @@ import { Contact } from '../../shared';
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss']
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent {
 
   @Input() contact: Contact;
-  @HostBinding('class') columnClass = 'col-md-3';
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  @Input() display: boolean;
+  @Output() toggled = new EventEmitter<ContactComponent>();
 }
