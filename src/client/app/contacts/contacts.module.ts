@@ -9,6 +9,7 @@ import { ContactListComponent } from './contact-list/contact-list.component';
 
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/contacts.reducer';
+import { ContactDisplayComponent } from './contact-display/contact-display.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { reducer } from './state/contacts.reducer';
     ContactComponent,
     AddContactComponent,
     ContactsComponent,
+    ContactDisplayComponent,
   ],
   exports: [
     ContactListComponent,

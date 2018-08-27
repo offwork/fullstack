@@ -1,6 +1,7 @@
 import { Contact } from '../../shared';
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { ContactActions, ContactsActionTypes } from './contacts.actions';
 
 export interface State extends fromRoot.State {
   contacts: ContactState;
@@ -13,7 +14,7 @@ export interface ContactState {
 }
 
 const initialState: ContactState = {
-  showContactAddress: true,
+  showContactAddress: false,
   currentContact: null,
   contacts: []
 }
@@ -35,12 +36,29 @@ export const getContacts = createSelector(
   state => state.contacts
 );
 
-export function reducer(state = initialState, action): ContactState {
+export function reducer(state = initialState, action: ContactActions): ContactState {
   switch (action.type) {
-    case 'TOGGLE_CONTACT_ADDRESS':
+    case ContactsActionTypes.ToggleContactAddress:
       return {
         ...state,
         showContactAddress: action.payload
+      };
+
+    case ContactsActionTypes.SetCurrentContact:
+      return {
+        ...state,
+        currentContact: { ...action.payload }
+      };
+
+    case ContactsActionTypes.InitializeCurrentConntact:
+      return {
+        ...state,
+        currentContact: {
+          name: '',
+          address: '',
+          phone: '',
+          photoUrl: '',
+        }
       };
   
     default:
