@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, HostBinding } from '@angular/core';
 import { Contact } from '../../shared';
 
 @Component({
@@ -9,5 +9,5 @@ import { Contact } from '../../shared';
 export class ContactComponent {
 
   @Input() contact: Contact;
-  @Input() display: boolean;
+  @HostBinding('class') columnClass = 'col-md-3';
 }
