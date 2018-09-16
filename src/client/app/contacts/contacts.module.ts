@@ -7,13 +7,16 @@ import { ContactListComponent } from './list/list.component';
 import { ContactsRoutingModule } from './contacts-routing.module';
 
 import { StoreModule } from '@ngrx/store';
-import { reducer } from './state/contacts.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromContacts from './reducers';
+import { ContactsEffects } from './effects/contacts.effects';
 
 @NgModule({
   imports: [
     CommonModule,
     ContactsRoutingModule,
-    StoreModule.forFeature('contact', reducer),
+    StoreModule.forFeature('contacts', fromContacts.reducers, { metaReducers: fromContacts.metaReducers }),
+    EffectsModule.forFeature([ContactsEffects]),
   ],
   declarations: [
     AddContactComponent,

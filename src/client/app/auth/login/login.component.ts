@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         console.log('Login: ', data)
         this.auth.setToken(data.body['token']);
-        this.router.navigate(['/contacts']);
+        this.router.navigate(['/']);
       });
   }
 
